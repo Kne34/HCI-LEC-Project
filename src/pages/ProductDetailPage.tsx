@@ -50,9 +50,9 @@ const ProductDetailPage = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex flex-col lg:flex-row gap-8 items-start">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 lg:items-start">
           
-          <div className="w-full lg:w-[380px] flex-shrink-0 sticky top-24">
+          <div className="w-full lg:w-[420px] flex-shrink-0 lg:top-24 mb-6 lg:mb-0">
             <div className="aspect-square rounded-xl overflow-hidden border border-slate-100 shadow-sm mb-4">
               <img src={activeImage} alt={product.name} className="w-full h-full object-cover transition-all duration-300" />
             </div>
