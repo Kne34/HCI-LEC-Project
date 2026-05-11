@@ -67,9 +67,6 @@ const App: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="border-t border-slate-100 mt-12 pt-8 text-center text-xs text-slate-400 font-medium">
-            &copy; 2026 Kyou Revision. Built for HCI Assignment. All Rights Reserved.
-          </div>
         </div>
       </footer>
     </div>

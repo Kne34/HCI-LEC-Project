@@ -227,7 +227,6 @@ const ProductDetailPage = () => {
         </div>
       </div>
 
-      {/* Mobile Floating Action Bar */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-100 p-4 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
         <div className="flex gap-3">
           <button className="p-3 border border-slate-200 rounded-xl text-slate-600">
