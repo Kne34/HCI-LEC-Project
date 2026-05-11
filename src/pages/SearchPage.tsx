@@ -16,6 +16,7 @@ const RECENCY = ["7 Hari", "14 Hari", "1 Bulan", "3 Bulan"];
 
 const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const searchQuery = searchParams.get('q') || '';
   
   const currentPage = parseInt(searchParams.get('page') || '1');
@@ -43,7 +44,6 @@ const SearchPage = () => {
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'Paling Sesuai');
   const [now] = useState(() => Date.now());
 
-  // Function to sync everything to URL
   const syncParams = (newFilters: string[], newPrice: typeof priceRange, newSort: string, page: number) => {
     const params = new URLSearchParams();
     if (searchQuery) params.set('q', searchQuery);
@@ -152,7 +152,7 @@ const SearchPage = () => {
       if (sortBy === 'Terbaru') return new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime();
       return 0;
     });
-  }, [selectedFilters, priceRange, sortBy, searchQuery]);
+  }, [selectedFilters, priceRange, sortBy, searchQuery, now]);
 
   const filterCounts = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -172,7 +172,7 @@ const SearchPage = () => {
       if (daysOld <= 90) counts["3 Bulan"] = (counts["3 Bulan"] || 0) + 1;
     });
     return counts;
-  }, []);
+  }, [now]);
 
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
   const paginatedProducts = filteredProducts.slice(
@@ -192,6 +192,8 @@ const SearchPage = () => {
           priceRange={priceRange}
           onPriceChange={handlePriceChange}
           filterCounts={filterCounts}
+          isMobileOpen={isMobileFilterOpen}
+          onClose={() => setIsMobileFilterOpen(false)}
         />
 
         <div className="flex-1">
@@ -209,18 +211,29 @@ const SearchPage = () => {
               </p>
             </div>
 
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-slate-600 whitespace-nowrap">Urutkan:</span>
-              <select
-                value={sortBy}
-                onChange={(e) => handleSortChange(e.target.value)}
-                className="bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer"
+            <div className="flex items-center gap-2">
+              {/* Mobile Filter Button */}
+              <button 
+                onClick={() => setIsMobileFilterOpen(true)}
+                className="lg:hidden flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-700 hover:bg-slate-50 transition-all"
               >
-                <option>Paling Sesuai</option>
-                <option>Terbaru</option>
-                <option>Harga Terendah</option>
-                <option>Harga Tertinggi</option>
-              </select>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 4.5h18m-18 5h18m-18 5h18m-18 5h18" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} /></svg>
+                Filter
+              </button>
+
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-slate-600 hidden sm:inline whitespace-nowrap">Urutkan:</span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => handleSortChange(e.target.value)}
+                  className="bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer"
+                >
+                  <option>Paling Sesuai</option>
+                  <option>Terbaru</option>
+                  <option>Harga Terendah</option>
+                  <option>Harga Tertinggi</option>
+                </select>
+              </div>
             </div>
           </div>
 
@@ -231,7 +244,7 @@ const SearchPage = () => {
               ))}
             </div>
           ) : (
-            <div className="bg-white rounded-3xl p-20 text-center border border-dashed border-slate-200">
+            <div className="bg-white rounded-3xl p-10 md:p-20 text-center border border-dashed border-slate-200">
               <div className="text-6xl mb-6">🔍</div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">Yah, barangnya nggak ketemu...</h3>
               <p className="text-slate-500 max-w-xs mx-auto">Coba cek ejaan kamu atau gunakan kata kunci yang lebih umum.</p>
