@@ -21,7 +21,7 @@ const LandingPage = () => {
     <div className="flex-1 flex flex-col overflow-x-hidden">
       <section className="relative h-[500px] bg-slate-900 flex items-center overflow-hidden">
          <div className="absolute inset-0 opacity-40">
-            <img src="https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?auto=format&fit=crop&q=80&w=2000" className="w-full h-full object-cover" alt="Hero Background" />
+            <img src="https://goldrecordoutlet.com/wp-content/uploads/2020/08/anime.jpg" className="w-full h-full object-cover" alt="Hero Background" />
          </div>
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white">
             <h1 className="text-5xl md:text-7xl font-black italic tracking-tighter mb-4">KYOU<span className="text-orange-600">.ID</span></h1>
