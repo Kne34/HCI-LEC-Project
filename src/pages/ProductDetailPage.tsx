@@ -167,7 +167,7 @@ const ProductDetailPage = () => {
             )}
           </div>
 
-          <div className="w-full lg:w-[280px] flex-shrink-0 sticky top-24">
+          <div className="hidden lg:block w-[280px] flex-shrink-0 sticky top-24">
             <div className="p-4 border border-slate-200 rounded-2xl shadow-sm bg-white">
               <h3 className="font-bold text-slate-900 mb-4 text-sm">Atur jumlah dan catatan</h3>
               
@@ -224,6 +224,28 @@ const ProductDetailPage = () => {
             </div>
           </div>
 
+        </div>
+      </div>
+
+      {/* Mobile Floating Action Bar */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-100 p-4 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+        <div className="flex gap-3">
+          <button className="p-3 border border-slate-200 rounded-xl text-slate-600">
+             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} /></svg>
+          </button>
+          <button 
+            onClick={handleAddToCart}
+            className={`flex-1 py-3 rounded-xl font-black text-sm transition-all border-2 ${
+              isAdding 
+                ? 'bg-white border-orange-500 text-orange-600' 
+                : 'bg-white border-orange-600 text-orange-600'
+            }`}
+          >
+            {isAdding ? '✓ Berhasil' : 'Keranjang'}
+          </button>
+          <button className="flex-1 py-3 bg-orange-600 text-white rounded-xl font-black text-sm">
+            Beli Sekarang
+          </button>
         </div>
       </div>
     </main>
