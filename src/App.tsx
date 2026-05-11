@@ -5,6 +5,7 @@ import LandingPage from './pages/LandingPage';
 import SearchPage from './pages/SearchPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
+import CheckoutPage from './pages/CheckoutPage';
 import { CartProvider } from './context/CartContext';
 
 const ProductWrapper = () => {
@@ -26,6 +27,7 @@ const App: React.FC = () => {
         <Route path="/search" element={<SearchPage key={searchParams.get('q') || 'default'}/>} />
         <Route path="/product/:id" element={<ProductWrapper />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
       </Routes>
 
       <footer className="bg-white border-t border-slate-100 py-12 mt-auto">

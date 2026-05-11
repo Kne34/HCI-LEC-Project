@@ -79,7 +79,10 @@ const CartPage = () => {
                 <span className="font-black text-2xl text-orange-600">Rp {totalPrice.toLocaleString('id-ID')}</span>
               </div>
             </div>
-            <button className="w-full py-4 bg-orange-600 text-white rounded-2xl font-black text-lg shadow-xl shadow-orange-100 hover:bg-orange-700 hover:-translate-y-1 transition-all active:scale-95">
+            <button 
+              onClick={() => navigate('/checkout')}
+              className="w-full py-4 bg-orange-600 text-white rounded-2xl font-black text-lg shadow-xl shadow-orange-100 hover:bg-orange-700 hover:-translate-y-1 transition-all active:scale-95"
+            >
               Beli Sekarang
             </button>
             <p className="text-[10px] text-center text-slate-400 mt-4 font-medium uppercase tracking-widest">Aman & Terpercaya dengan Kyou.id</p>

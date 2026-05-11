@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { MOCK_PRODUCTS } from '../data/mockProducts';
 import { useCart } from '../context/CartState';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { addToCart } = useCart();
   const [isAdding, setIsAdding] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -202,7 +203,10 @@ const ProductDetailPage = () => {
                 >
                   {isAdding ? '✓ Berhasil' : '+ Keranjang'}
                 </button>
-                <button className="w-full py-3 border-2 border-orange-600 text-orange-600 rounded-xl font-black text-sm hover:bg-orange-50 transition-all">
+                <button 
+                  onClick={() => navigate(`/checkout?buyNow=${product.id}&qty=${quantity}`)}
+                  className="w-full py-3 border-2 border-orange-600 text-orange-600 rounded-xl font-black text-sm hover:bg-orange-50 transition-all"
+                >
                   Beli Langsung
                 </button>
               </div>
@@ -242,7 +246,10 @@ const ProductDetailPage = () => {
           >
             {isAdding ? '✓ Berhasil' : 'Keranjang'}
           </button>
-          <button className="flex-1 py-3 bg-orange-600 text-white rounded-xl font-black text-sm">
+          <button 
+            onClick={() => navigate(`/checkout?buyNow=${product.id}&qty=${quantity}`)}
+            className="flex-1 py-3 bg-orange-600 text-white rounded-xl font-black text-sm active:scale-95 transition-all"
+          >
             Beli Sekarang
           </button>
         </div>

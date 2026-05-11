@@ -47,7 +47,7 @@ const Navbar: React.FC = () => {
               className="w-full bg-slate-100 border-none rounded-xl py-2 md:py-2.5 pl-10 md:pl-12 pr-4 text-xs md:text-sm focus:ring-2 focus:ring-orange-100 focus:bg-white transition-all outline-none"
             />
             <svg 
-              className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 md:w-4 h-4 text-slate-400 cursor-pointer hover:text-orange-600 transition-colors" 
+              className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 md:w-4 md:h-4 text-slate-400 cursor-pointer hover:text-orange-600 transition-colors" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
