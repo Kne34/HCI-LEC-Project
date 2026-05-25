@@ -18,3 +18,27 @@ export interface Product {
   gallery: string[];
   description: string;
 }
+
+export interface OrderItem {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  quantity: number;
+  isReady?: boolean;
+}
+
+export interface Order {
+  id: string;
+  date: string;
+  items: OrderItem[];
+  status: 'Sedang Diproses' | 'Pengiriman Selesai' | 'Dibatalkan' | 'Menunggu Pembayaran';
+  paymentMethod: string;
+  shippingMethod: string;
+  shippingFee: number;
+  subtotal: number;
+  total: number;
+  statusNote: string;
+  isPreOrder?: boolean;
+}
+

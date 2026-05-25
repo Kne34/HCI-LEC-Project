@@ -6,10 +6,11 @@ import { useCart } from '../context/CartState';
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { cart } = useCart();
+  const { cart, addOrder } = useCart();
 
   const [step, setStep] = useState(1);
   const [selectedPayment, setSelectedPayment] = useState('');
+  const [placedOrderId, setPlacedOrderId] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
   const [isEditingAddress, setIsEditingAddress] = useState(false);
@@ -48,6 +49,26 @@ const CheckoutPage: React.FC = () => {
   const handlePlaceOrder = () => {
     setIsProcessing(true);
     setTimeout(() => {
+      const orderItems = checkoutItems.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        image: item.image,
+        quantity: item.quantity,
+        isReady: item.isReady
+      }));
+
+      const orderId = addOrder({
+        items: orderItems,
+        paymentMethod: selectedPayment || selectedPaymentCategory,
+        shippingMethod: selectedShipping,
+        shippingFee: shippingFee,
+        subtotal: subtotal,
+        total: total,
+        statusNote: 'Pembayaran Selesai! Packing List segera Team Kyou Print!'
+      });
+
+      setPlacedOrderId(orderId);
       setIsProcessing(false);
       setStep(3);
     }, 2000);
@@ -71,16 +92,24 @@ const CheckoutPage: React.FC = () => {
         <h1 className="text-3xl font-black text-slate-900 italic mb-2">PEMBAYARAN BERHASIL!</h1>
         <p className="text-slate-500 mb-8 max-w-md">Terima kasih atas pesananmu. Admin Kyou akan segera memproses dan mengirimkan koleksi favoritmu.</p>
         <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm w-full max-w-sm mb-8">
-           <div className="flex justify-between text-sm mb-2"><span className="text-slate-400">ID Pesanan</span> <span className="font-bold text-slate-900">#KYOU-882931</span></div>
-           <div className="flex justify-between text-sm mb-2"><span className="text-slate-400">Metode</span> <span className="font-bold text-slate-900">{selectedPayment}</span></div>
+           <div className="flex justify-between text-sm mb-2"><span className="text-slate-400">ID Pesanan</span> <span className="font-bold text-slate-900">#{placedOrderId}</span></div>
+           <div className="flex justify-between text-sm mb-2"><span className="text-slate-400">Metode</span> <span className="font-bold text-slate-900">{selectedPayment || selectedPaymentCategory}</span></div>
            <div className="flex justify-between text-sm mb-2"><span className="text-slate-400">Estimasi Tiba</span> <span className="font-bold text-green-600">{deliveryEstimate}</span></div>
         </div>
-        <button 
-          onClick={() => navigate('/')}
-          className="bg-orange-600 text-white px-12 py-4 rounded-2xl font-black shadow-xl shadow-orange-100 hover:bg-orange-700 transition-all active:scale-95"
-        >
-          Kembali ke Beranda
-        </button>
+        <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md justify-center">
+          <button 
+            onClick={() => navigate('/order-history')}
+            className="bg-orange-600 text-white px-8 py-4 rounded-2xl font-black shadow-xl shadow-orange-100 hover:bg-orange-700 transition-all active:scale-95 flex-1"
+          >
+            Lihat Riwayat Pesanan
+          </button>
+          <button 
+            onClick={() => navigate('/')}
+            className="border-2 border-slate-200 text-slate-700 px-8 py-4 rounded-2xl font-bold hover:bg-slate-50 transition-all active:scale-95 flex-1"
+          >
+            Kembali Belanja
+          </button>
+        </div>
       </div>
     );
   }

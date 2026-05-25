@@ -6,6 +6,7 @@ import SearchPage from './pages/SearchPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
+import OrderHistoryPage from './pages/OrderHistoryPage';
 import { CartProvider } from './context/CartContext';
 
 const ProductWrapper = () => {
@@ -28,7 +29,9 @@ const App: React.FC = () => {
         <Route path="/product/:id" element={<ProductWrapper />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/order-history" element={<OrderHistoryPage />} />
       </Routes>
+
 
       <footer className="bg-white border-t border-slate-100 py-12 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
