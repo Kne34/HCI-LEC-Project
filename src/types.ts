@@ -17,6 +17,7 @@ export interface Product {
   weight: number;
   gallery: string[];
   description: string;
+  stock: number;
 }
 
 export interface OrderItem {
@@ -26,6 +27,7 @@ export interface OrderItem {
   image: string;
   quantity: number;
   isReady?: boolean;
+  stock?: number;
 }
 
 export interface Order {

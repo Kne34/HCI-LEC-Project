@@ -122,8 +122,12 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.id === product.id);
       if (existingItem) {
+        const nextQty = existingItem.quantity + 1;
+        if (product.isReady && product.stock !== undefined && nextQty > product.stock) {
+          return prevCart;
+        }
         return prevCart.map(item =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === product.id ? { ...item, quantity: nextQty } : item
         );
       }
       return [...prevCart, { ...product, quantity: 1 }];

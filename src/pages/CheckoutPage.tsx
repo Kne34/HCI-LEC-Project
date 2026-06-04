@@ -26,7 +26,11 @@ const CheckoutPage: React.FC = () => {
   const checkoutItems = useMemo(() => {
     if (productId) {
       const product = MOCK_PRODUCTS.find(p => p.id === Number(productId));
-      return product ? [{ ...product, quantity }] : [];
+      if (product) {
+        const finalQty = product.isReady && product.stock !== undefined ? Math.min(product.stock, quantity) : quantity;
+        return [{ ...product, quantity: finalQty }];
+      }
+      return [];
     }
     return cart;
   }, [productId, quantity, cart]);

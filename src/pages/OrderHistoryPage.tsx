@@ -49,7 +49,8 @@ const OrderHistoryPage: React.FC = () => {
         weight: 500,
         gallery: [item.image],
         description: '',
-        isReady: item.isReady
+        isReady: item.isReady,
+        stock: item.stock
       });
     });
     showToast(`${items.length} item berhasil ditambahkan kembali ke keranjang!`);

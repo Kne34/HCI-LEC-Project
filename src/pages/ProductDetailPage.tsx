@@ -181,11 +181,16 @@ const ProductDetailPage = () => {
                     >-</button>
                     <span className="w-8 text-center text-sm font-bold text-slate-900">{quantity}</span>
                     <button 
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="w-8 h-8 flex items-center justify-center text-orange-600 font-bold"
+                      onClick={() => setQuantity(prev => product.isReady ? Math.min(product.stock, prev + 1) : prev + 1)}
+                      className={`w-8 h-8 flex items-center justify-center font-bold ${
+                        product.isReady && quantity >= product.stock 
+                          ? 'text-slate-300 cursor-not-allowed' 
+                          : 'text-orange-600 hover:scale-110'
+                      }`}
+                      disabled={product.isReady && quantity >= product.stock}
                     >+</button>
                  </div>
-                 <p className="text-xs text-slate-500">Stok: <span className="font-bold text-slate-900">5.667</span></p>
+                 <p className="text-xs text-slate-500">Stok: <span className="font-bold text-slate-900">{product.stock}</span></p>
               </div>
 
               <div className="flex items-center justify-between mb-6">
