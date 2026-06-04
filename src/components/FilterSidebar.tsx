@@ -6,7 +6,7 @@ interface FilterGroupProps {
 }
 
 const FilterGroup: React.FC<FilterGroupProps> = ({ title, children }) => (
-  <div className="mb-6">
+  <div className="mb-6 overflow-hidden">
     <h3 className="text-sm font-bold text-slate-800 mb-3 uppercase tracking-wider">{title}</h3>
     <div className="space-y-2">
       {children}
