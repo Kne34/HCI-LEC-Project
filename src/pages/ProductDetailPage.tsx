@@ -71,7 +71,7 @@ const ProductDetailPage = () => {
           </div>
 
           <div className="flex-1 min-w-0">
-            <h1 className="text-[16px] font-bold text-slate-900 leading-snug mb-2">{product.name}</h1>
+            <h1 className="text-[24px] font-bold text-slate-900 leading-snug mb-2">{product.name}</h1>
             
             <div className="flex items-center gap-2 text-sm mb-4">
               <span className="text-slate-500">Terjual <span className="text-slate-900 font-medium">{product.sold}+</span></span>
