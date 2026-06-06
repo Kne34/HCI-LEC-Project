@@ -1,12 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { MOCK_PRODUCTS } from '../data/mockProducts';
 import { useCart } from '../context/CartState';
 
 const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { cart, addOrder } = useCart();
+  const { cart, addOrder, products } = useCart();
 
   const [step, setStep] = useState(1);
   const [selectedPayment, setSelectedPayment] = useState('');
@@ -25,7 +24,7 @@ const CheckoutPage: React.FC = () => {
 
   const checkoutItems = useMemo(() => {
     if (productId) {
-      const product = MOCK_PRODUCTS.find(p => p.id === Number(productId));
+      const product = products.find(p => p.id === Number(productId));
       if (product) {
         const finalQty = product.isReady && product.stock !== undefined ? Math.min(product.stock, quantity) : quantity;
         return [{ ...product, quantity: finalQty }];
@@ -33,7 +32,7 @@ const CheckoutPage: React.FC = () => {
       return [];
     }
     return cart;
-  }, [productId, quantity, cart]);
+  }, [productId, quantity, cart, products]);
 
   const [selectedShipping, setSelectedShipping] = useState('Reguler');
   const [selectedPaymentCategory, setSelectedPaymentCategory] = useState('QRIS');

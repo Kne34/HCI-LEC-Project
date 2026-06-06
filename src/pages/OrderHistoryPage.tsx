@@ -5,7 +5,7 @@ import type { Order, OrderItem } from '../types';
 
 const OrderHistoryPage: React.FC = () => {
   const navigate = useNavigate();
-  const { orders, cancelOrder, addToCart, wishlist, toggleWishlist } = useCart();
+  const { orders, cancelOrder, addToCart, wishlist, toggleWishlist, products } = useCart();
 
   const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
@@ -33,25 +33,30 @@ const OrderHistoryPage: React.FC = () => {
 
   const handleBuyAgain = (items: OrderItem[]) => {
     items.forEach(item => {
-      addToCart({
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        image: item.image,
-        series: 'Kyou Collection',
-        rating: 5,
-        sold: 0,
-        category: 'Scale Figure',
-        location: 'Indonesia',
-        condition: 'Baru',
-        shipping: [],
-        addedAt: new Date().toISOString(),
-        weight: 500,
-        gallery: [item.image],
-        description: '',
-        isReady: item.isReady,
-        stock: item.stock
-      });
+      const actualProduct = products.find(p => p.id === item.id);
+      if (actualProduct) {
+        addToCart(actualProduct);
+      } else {
+        addToCart({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          image: item.image,
+          series: 'Kyou Collection',
+          rating: 5,
+          sold: 0,
+          category: 'Scale Figure',
+          location: 'Indonesia',
+          condition: 'Baru',
+          shipping: [],
+          addedAt: new Date().toISOString(),
+          weight: 500,
+          gallery: [item.image],
+          description: '',
+          isReady: item.isReady,
+          stock: item.stock ?? 0
+        });
+      }
     });
     showToast(`${items.length} item berhasil ditambahkan kembali ke keranjang!`);
     setTimeout(() => navigate('/cart'), 800);

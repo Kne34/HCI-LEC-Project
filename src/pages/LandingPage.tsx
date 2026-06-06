@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MOCK_PRODUCTS } from '../data/mockProducts';
+import { useCart } from '../context/CartState';
 import ProductCard from '../components/ProductCard';
 
 const LandingPage = () => {
   const navigate = useNavigate();
   const [activeSlide, setActiveSlide] = useState(0);
+  const { products } = useCart();
 
-  const topProducts = [...MOCK_PRODUCTS].sort((a, b) => b.sold - a.sold).slice(0, 3);
-  const recommendedProducts = MOCK_PRODUCTS.slice(0, 12);
+  const topProducts = [...products].sort((a, b) => b.sold - a.sold).slice(0, 3);
+  const recommendedProducts = products.slice(0, 12);
 
   useEffect(() => {
     const timer = setInterval(() => {

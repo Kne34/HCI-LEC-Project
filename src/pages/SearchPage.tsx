@@ -2,7 +2,8 @@ import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import FilterSidebar from '../components/FilterSidebar';
 import ProductCard from '../components/ProductCard';
-import { EXTENDED_PRODUCTS, ITEMS_PER_PAGE } from '../data/mockProducts';
+import { ITEMS_PER_PAGE } from '../data/mockProducts';
+import { useCart } from '../context/CartState';
 
 const CATEGORIES = ["Scale Figure", "Nendoroid", "Model Kit", "Merchandise"];
 const LOCATIONS = [
@@ -18,6 +19,7 @@ const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const searchQuery = searchParams.get('q') || '';
+  const { products } = useCart();
   
   const currentPage = parseInt(searchParams.get('page') || '1');
 
@@ -104,7 +106,7 @@ const SearchPage = () => {
   };
 
   const filteredProducts = useMemo(() => {
-    return EXTENDED_PRODUCTS.filter(product => {
+    return products.filter(product => {
       if (searchQuery && !product.name.toLowerCase().includes(searchQuery.toLowerCase()) && !product.series.toLowerCase().includes(searchQuery.toLowerCase())) {
         return false;
       }
@@ -156,7 +158,7 @@ const SearchPage = () => {
 
   const filterCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    EXTENDED_PRODUCTS.forEach(p => {
+    products.forEach(p => {
       if (p.isReady) counts["Ready Stock"] = (counts["Ready Stock"] || 0) + 1;
       else counts["PreOrder"] = (counts["PreOrder"] || 0) + 1;
       counts[p.location] = (counts[p.location] || 0) + 1;

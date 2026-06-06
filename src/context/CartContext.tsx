@@ -51,6 +51,22 @@ const INITIAL_MOCK_ORDERS: Order[] = [
 ];
 
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [products, setProducts] = useState<Product[]>(() => {
+    const saved = localStorage.getItem('kyou_products');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error("Failed to parse products", e);
+      }
+    }
+    return MOCK_PRODUCTS;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('kyou_products', JSON.stringify(products));
+  }, [products]);
+
   const [cart, setCart] = useState<CartItem[]>([]);
   const [orders, setOrders] = useState<Order[]>(() => {
     const saved = localStorage.getItem('kyou_orders');
@@ -97,7 +113,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         console.error("Failed to parse wishlist", e);
       }
     }
-    return MOCK_PRODUCTS.filter(p => p.id === 3 || p.id === 8);
+    return products.filter(p => p.id === 3 || p.id === 8);
   });
 
   useEffect(() => {
@@ -119,18 +135,19 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const addToCart = (product: Product) => {
+    const currentProduct = products.find(p => p.id === product.id) || product;
     setCart(prevCart => {
-      const existingItem = prevCart.find(item => item.id === product.id);
+      const existingItem = prevCart.find(item => item.id === currentProduct.id);
       if (existingItem) {
         const nextQty = existingItem.quantity + 1;
-        if (product.isReady && product.stock !== undefined && nextQty > product.stock) {
+        if (currentProduct.isReady && currentProduct.stock !== undefined && nextQty > currentProduct.stock) {
           return prevCart;
         }
         return prevCart.map(item =>
-          item.id === product.id ? { ...item, quantity: nextQty } : item
+          item.id === currentProduct.id ? { ...item, quantity: nextQty } : item
         );
       }
-      return [...prevCart, { ...product, quantity: 1 }];
+      return [...prevCart, { ...currentProduct, quantity: 1 }];
     });
   };
 
@@ -156,12 +173,41 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       isPreOrder: hasPreOrder
     };
 
+    setProducts(prevProducts => {
+      return prevProducts.map(p => {
+        const orderedItem = orderData.items.find(item => item.id === p.id);
+        if (orderedItem && p.isReady) {
+          return {
+            ...p,
+            stock: Math.max(0, p.stock - orderedItem.quantity)
+          };
+        }
+        return p;
+      });
+    });
+
     setOrders(prev => [newOrder, ...prev]);
     clearCart();
     return orderId;
   };
 
   const cancelOrder = (orderId: string) => {
+    const orderToCancel = orders.find(o => o.id === orderId);
+    if (orderToCancel && orderToCancel.status !== 'Dibatalkan') {
+      setProducts(prevProducts => {
+        return prevProducts.map(p => {
+          const orderedItem = orderToCancel.items.find(item => item.id === p.id);
+          if (orderedItem && p.isReady) {
+            return {
+              ...p,
+              stock: p.stock + orderedItem.quantity
+            };
+          }
+          return p;
+        });
+      });
+    }
+
     setOrders(prev => prev.map(order => 
       order.id === orderId 
         ? { ...order, status: 'Dibatalkan', statusNote: 'Pesanan dibatalkan oleh pembeli.' } 
@@ -172,7 +218,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, cartCount, orders, addOrder, cancelOrder, wishlist, toggleWishlist, isInWishlist }}>
+    <CartContext.Provider value={{ products, cart, addToCart, removeFromCart, clearCart, cartCount, orders, addOrder, cancelOrder, wishlist, toggleWishlist, isInWishlist }}>
       {children}
     </CartContext.Provider>
   );

@@ -1,19 +1,18 @@
 import { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { MOCK_PRODUCTS } from '../data/mockProducts';
 import { useCart } from '../context/CartState';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart, toggleWishlist, isInWishlist } = useCart();
+  const { products, addToCart, toggleWishlist, isInWishlist } = useCart();
   const isWishlisted = isInWishlist(Number(id));
   const [isAdding, setIsAdding] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('Detail Produk');
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
   
-  const product = MOCK_PRODUCTS.find(p => p.id === Number(id));
+  const product = products.find(p => p.id === Number(id));
   const [activeImage, setActiveImage] = useState(product?.image || '');
 
   if (!product) {
