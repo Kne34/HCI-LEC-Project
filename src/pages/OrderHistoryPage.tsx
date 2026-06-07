@@ -9,7 +9,7 @@ const OrderHistoryPage: React.FC = () => {
 
   const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState<'Semua' | 'Sedang Diproses' | 'Pengiriman Selesai' | 'Dibatalkan'>('Semua');
+  const [activeTab, setActiveTab] = useState<'All' | 'Processing' | 'Completed' | 'Cancelled'>('All');
   
   const [cancellingOrderId, setCancellingOrderId] = useState<string | null>(null);
   const [reviewOrder, setReviewOrder] = useState<Order | null>(null);
@@ -28,7 +28,7 @@ const OrderHistoryPage: React.FC = () => {
   const handleCopyId = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     navigator.clipboard.writeText(id);
-    showToast(`ID Pesanan #${id} berhasil disalin!`);
+    showToast(`Order ID #${id} successfully copied!`);
   };
 
   const handleBuyAgain = (items: OrderItem[]) => {
@@ -47,7 +47,7 @@ const OrderHistoryPage: React.FC = () => {
           sold: 0,
           category: 'Scale Figure',
           location: 'Indonesia',
-          condition: 'Baru',
+          condition: 'New',
           shipping: [],
           addedAt: new Date().toISOString(),
           weight: 500,
@@ -58,7 +58,7 @@ const OrderHistoryPage: React.FC = () => {
         });
       }
     });
-    showToast(`${items.length} item berhasil ditambahkan kembali ke keranjang!`);
+    showToast(`${items.length} item(s) successfully re-added to cart!`);
     setTimeout(() => navigate('/cart'), 800);
   };
 
@@ -66,13 +66,13 @@ const OrderHistoryPage: React.FC = () => {
     if (cancellingOrderId) {
       cancelOrder(cancellingOrderId);
       setCancellingOrderId(null);
-      showToast('Pesanan berhasil dibatalkan.');
+      showToast('Order successfully cancelled.');
     }
   };
 
   const filteredOrders = useMemo(() => {
     return orders.filter(order => {
-      if (activeTab !== 'Semua' && order.status !== activeTab) {
+      if (activeTab !== 'All' && order.status !== activeTab) {
         return false;
       }
       if (searchQuery.trim() !== '') {
@@ -89,10 +89,10 @@ const OrderHistoryPage: React.FC = () => {
 
   const tabCounts = useMemo(() => {
     return {
-      Semua: orders.length,
-      'Sedang Diproses': orders.filter(o => o.status === 'Sedang Diproses').length,
-      'Pengiriman Selesai': orders.filter(o => o.status === 'Pengiriman Selesai').length,
-      Dibatalkan: orders.filter(o => o.status === 'Dibatalkan').length,
+      All: orders.length,
+      Processing: orders.filter(o => o.status === 'Processing').length,
+      Completed: orders.filter(o => o.status === 'Completed').length,
+      Cancelled: orders.filter(o => o.status === 'Cancelled').length,
     };
   }, [orders]);
 
@@ -128,7 +128,7 @@ const OrderHistoryPage: React.FC = () => {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
-              Riwayat Pesanan
+              Order History
             </button>
             <button 
               onClick={() => {
@@ -147,13 +147,13 @@ const OrderHistoryPage: React.FC = () => {
         <section className="lg:col-span-3 space-y-6">
           {activeSidebarMenu === 'orders' ? (
             <div className="bg-white rounded-3xl border border-slate-100 p-6 sm:p-8 shadow-sm">
-              <h1 className="text-2xl font-black text-slate-800 italic uppercase tracking-tight mb-6">Riwayat Pesanan</h1>
+              <h1 className="text-2xl font-black text-slate-800 italic uppercase tracking-tight mb-6">Order History</h1>
 
               <div className="space-y-6 mb-8">
                 <div className="relative">
                   <input 
                     type="text" 
-                    placeholder="Cari berdasarkan ID Pesanan atau Nama Produk..." 
+                    placeholder="Search by Order ID or Product Name..." 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-3.5 pl-11 pr-4 text-sm focus:ring-2 focus:ring-orange-100 focus:bg-white outline-none transition-all"
@@ -164,7 +164,7 @@ const OrderHistoryPage: React.FC = () => {
                 </div>
 
                 <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide border-b border-slate-100">
-                  {(['Semua', 'Sedang Diproses', 'Pengiriman Selesai', 'Dibatalkan'] as const).map(tab => (
+                  {(['All', 'Processing', 'Completed', 'Cancelled'] as const).map(tab => (
                     <button
                       key={tab}
                       onClick={() => setActiveTab(tab)}
@@ -188,8 +188,8 @@ const OrderHistoryPage: React.FC = () => {
                   <svg className="w-16 h-16 text-slate-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
-                  <h3 className="font-bold text-slate-800 text-lg mb-1">Tidak ada pesanan ditemukan</h3>
-                  <p className="text-slate-500 text-sm max-w-sm mx-auto">Coba ubah kata kunci pencarian atau ganti filter kategori.</p>
+                  <h3 className="font-bold text-slate-800 text-lg mb-1">No orders found</h3>
+                  <p className="text-slate-500 text-sm max-w-sm mx-auto">Try changing the search keyword or switch category filter.</p>
                 </div>
               ) : (
                 <div className="space-y-6">
@@ -208,7 +208,7 @@ const OrderHistoryPage: React.FC = () => {
                             </svg>
                           </div>
                           <span className="text-xs text-slate-400 font-medium">
-                            {new Date(order.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+                            {new Date(order.date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
                           </span>
                           {order.isPreOrder ? (
                             <span className="badge bg-blue-50 text-blue-600 border border-blue-100 text-[9px] px-2 py-0.5 rounded-lg">Pre-Order</span>
@@ -217,9 +217,9 @@ const OrderHistoryPage: React.FC = () => {
                           )}
                         </div>
                         <span className={`px-3 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase ${
-                          order.status === 'Sedang Diproses' 
+                          order.status === 'Processing' 
                             ? 'bg-amber-50 text-amber-600 border border-amber-100'
-                            : order.status === 'Pengiriman Selesai'
+                            : order.status === 'Completed'
                             ? 'bg-green-50 text-green-600 border border-green-100'
                             : 'bg-red-50 text-red-600 border border-red-100'
                         }`}>
@@ -235,7 +235,7 @@ const OrderHistoryPage: React.FC = () => {
                             <div className="flex-1 flex flex-col justify-between py-1">
                               <div>
                                 <h4 className="font-bold text-slate-800 text-sm leading-snug line-clamp-2">{item.name}</h4>
-                                <p className="text-xs text-slate-400 font-medium mt-1">QTY: {item.quantity} Unit</p>
+                                <p className="text-xs text-slate-400 font-medium mt-1">QTY: {item.quantity} Unit(s)</p>
                               </div>
                               <p className="font-bold text-slate-900 text-sm mt-1">Rp {item.price.toLocaleString('id-ID')}</p>
                             </div>
@@ -248,48 +248,48 @@ const OrderHistoryPage: React.FC = () => {
                       </div>
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-4 border-t border-slate-50">
                         <div>
-                          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Total Belanja</p>
+                          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Total Shopping</p>
                           <p className="text-lg font-black text-orange-600 mt-0.5">Rp {order.total.toLocaleString('id-ID')}</p>
                         </div>
 
                         <div className="flex items-center gap-2">
-                          {order.status === 'Sedang Diproses' && (
+                          {order.status === 'Processing' && (
                             <>
                               <button 
-                                onClick={() => showToast(`Lacak Pesanan #${order.id}: Sedang dikemas oleh tim Kyou.`)}
+                                onClick={() => showToast(`Track Order #${order.id}: Being packed by Kyou team.`)}
                                 className="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 border border-slate-200 rounded-xl hover:bg-slate-50 transition-all flex items-center gap-1.5"
                               >
-                                Lacak
+                                Track
                               </button>
                               <button 
                                 onClick={() => setCancellingOrderId(order.id)}
                                 className="px-4 py-2 text-xs font-bold text-red-600 hover:bg-red-50 rounded-xl transition-all"
                               >
-                                Batalkan
+                                Cancel
                               </button>
                             </>
                           )}
-                          {order.status === 'Dibatalkan' && (
+                          {order.status === 'Cancelled' && (
                             <button 
                               onClick={() => handleBuyAgain(order.items)}
                               className="px-5 py-2.5 text-xs font-black uppercase tracking-wider bg-orange-600 hover:bg-orange-700 text-white rounded-xl shadow-md shadow-orange-100 transition-all"
                             >
-                              Beli Lagi
+                              Buy Again
                             </button>
                           )}
-                          {order.status === 'Pengiriman Selesai' && (
+                          {order.status === 'Completed' && (
                             <>
                               <button 
                                 onClick={() => setReviewOrder(order)}
                                 className="px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 border border-slate-200 rounded-xl transition-all"
                               >
-                                Ulas Produk
+                                Write Review
                               </button>
                               <button 
                                 onClick={() => handleBuyAgain(order.items)}
                                 className="px-5 py-2.5 text-xs font-black uppercase tracking-wider bg-orange-600 hover:bg-orange-700 text-white rounded-xl shadow-md shadow-orange-100 transition-all"
                               >
-                                Beli Lagi
+                                Buy Again
                               </button>
                             </>
                           )}
@@ -303,19 +303,19 @@ const OrderHistoryPage: React.FC = () => {
             </div>
           ) : (
             <div className="bg-white rounded-3xl border border-slate-100 p-6 sm:p-8 shadow-sm">
-              <h1 className="text-2xl font-black text-slate-800 italic uppercase tracking-tight mb-6">Wishlist Saya</h1>
+              <h1 className="text-2xl font-black text-slate-800 italic uppercase tracking-tight mb-6">My Wishlist</h1>
               {wishlist.length === 0 ? (
                 <div className="text-center py-20 bg-slate-50/50 rounded-3xl border border-dashed border-slate-100">
                   <svg className="w-16 h-16 text-slate-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
-                  <h3 className="font-bold text-slate-800 text-lg mb-1">Wishlist kamu masih kosong</h3>
-                  <p className="text-slate-500 text-sm max-w-sm mx-auto mb-6">Kamu belum menambahkan item favorit apa pun ke wishlist.</p>
+                  <h3 className="font-bold text-slate-800 text-lg mb-1">Your wishlist is empty</h3>
+                  <p className="text-slate-500 text-sm max-w-sm mx-auto mb-6">You haven't added any favorite items to your wishlist yet.</p>
                   <button 
                     onClick={() => navigate('/')}
                     className="bg-orange-600 text-white px-8 py-3 rounded-xl font-bold text-sm hover:bg-orange-700 transition-all shadow-md shadow-orange-100"
                   >
-                    Mulai Cari Produk
+                    Start Searching Products
                   </button>
                 </div>
               ) : (
@@ -333,7 +333,7 @@ const OrderHistoryPage: React.FC = () => {
                         <button
                           onClick={() => toggleWishlist(product)}
                           className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm border border-slate-100 flex items-center justify-center text-red-500 hover:bg-red-50 hover:text-red-600 transition-all shadow-sm"
-                          title="Hapus dari Wishlist"
+                          title="Remove from Wishlist"
                         >
                           <svg className="w-4 h-4 fill-current text-red-500" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -365,14 +365,14 @@ const OrderHistoryPage: React.FC = () => {
                           <button 
                             onClick={() => {
                               addToCart(product);
-                              showToast('Item berhasil ditambahkan ke keranjang!');
+                              showToast('Item successfully added to cart!');
                             }}
                             className="w-full mt-4 py-2.5 bg-orange-600 text-white rounded-xl font-bold text-xs hover:bg-orange-700 transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
                           >
                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>
-                            + Keranjang
+                            + Cart
                           </button>
                         </div>
                       </div>
@@ -396,21 +396,21 @@ const OrderHistoryPage: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
-              <h3 className="font-black text-slate-900 text-lg mb-2">Batalkan Pesanan?</h3>
-              <p className="text-slate-500 text-xs leading-relaxed mb-6">Tindakan ini akan membatalkan pesanan secara permanen. Apakah kamu yakin ingin melanjutkan?</p>
+              <h3 className="font-black text-slate-900 text-lg mb-2">Cancel Order?</h3>
+              <p className="text-slate-500 text-xs leading-relaxed mb-6">This action will permanently cancel the order. Are you sure you want to continue?</p>
               
               <div className="flex gap-3">
                 <button 
                   onClick={() => setCancellingOrderId(null)}
                   className="flex-1 py-3 bg-slate-100 text-slate-700 font-bold text-xs rounded-xl hover:bg-slate-200 transition-all uppercase tracking-wider"
                 >
-                  Kembali
+                  Back
                 </button>
                 <button 
                   onClick={handleConfirmCancel}
                   className="flex-1 py-3 bg-red-600 text-white font-black text-xs rounded-xl hover:bg-red-700 transition-all uppercase tracking-wider shadow-lg shadow-red-100"
                 >
-                  Ya, Batalkan
+                  Yes, Cancel
                 </button>
               </div>
             </div>
@@ -422,7 +422,7 @@ const OrderHistoryPage: React.FC = () => {
           <div className="bg-white rounded-[32px] w-full max-w-md overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200">
             <div className="p-6 sm:p-8">
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-black text-slate-900 italic uppercase">Tulis Ulasan</h3>
+                <h3 className="text-lg font-black text-slate-900 italic uppercase">Write Review</h3>
                 <button 
                   onClick={() => setReviewOrder(null)}
                   className="text-slate-400 hover:text-slate-600 p-1 bg-slate-50 rounded-full"
@@ -442,7 +442,7 @@ const OrderHistoryPage: React.FC = () => {
                 ))}
                 
                 <div className="pt-4 space-y-3">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Rating Produk</label>
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Product Rating</label>
                   <div className="flex gap-2">
                     {[1, 2, 3, 4, 5].map(star => (
                       <button key={star} className="text-amber-400 hover:scale-110 transition-transform">
@@ -455,9 +455,9 @@ const OrderHistoryPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1 pt-2">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Komentar Ulasan</label>
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Review Comment</label>
                   <textarea 
-                    placeholder="Tulis pendapatmu tentang koleksi ini..."
+                    placeholder="Write your opinion about this collection..."
                     className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-xs focus:ring-1 focus:ring-orange-500 outline-none resize-none transition-all"
                     rows={4}
                   />
@@ -469,16 +469,16 @@ const OrderHistoryPage: React.FC = () => {
                   onClick={() => setReviewOrder(null)}
                   className="flex-1 py-3 bg-slate-100 text-slate-700 font-bold text-xs rounded-xl hover:bg-slate-200 transition-all uppercase tracking-wider"
                 >
-                  Kembali
+                  Back
                 </button>
                 <button 
                   onClick={() => {
                     setReviewOrder(null);
-                    showToast('Terima kasih! Ulasan kamu berhasil dikirim.');
+                    showToast('Thank you! Your review has been submitted successfully.');
                   }}
                   className="flex-1 py-3 bg-orange-600 text-white font-black text-xs rounded-xl hover:bg-orange-700 transition-all uppercase tracking-wider shadow-lg shadow-orange-100"
                 >
-                  Kirim Ulasan
+                  Submit Review
                 </button>
               </div>
             </div>

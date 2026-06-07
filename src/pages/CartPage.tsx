@@ -15,13 +15,13 @@ const CartPage = () => {
              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
            </svg>
         </div>
-        <h2 className="text-2xl font-black text-slate-900 italic mb-2">KERANJANG KAMU KOSONG</h2>
-        <p className="text-slate-500 mb-8 max-w-sm">Wah, keranjang kamu masih sepi nih. Yuk, cari figure atau merchandise favoritmu sekarang!</p>
+        <h2 className="text-2xl font-black text-slate-900 italic mb-2">YOUR CART IS EMPTY</h2>
+        <p className="text-slate-500 mb-8 max-w-sm">Wow, your cart is empty. Let's find your favorite figures or merchandise now!</p>
         <button 
           onClick={() => navigate('/')}
           className="bg-orange-600 text-white px-12 py-4 rounded-2xl font-black shadow-xl shadow-orange-100 hover:bg-orange-700 transition-all hover:-translate-y-1"
         >
-          Mulai Belanja
+          Start Shopping
         </button>
       </div>
     );
@@ -29,7 +29,7 @@ const CartPage = () => {
 
   return (
     <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
-      <h1 className="text-3xl font-black text-slate-900 italic mb-10">KERANJANG BELANJA</h1>
+      <h1 className="text-3xl font-black text-slate-900 italic mb-10">SHOPPING CART</h1>
       
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="flex-1 space-y-4">
@@ -64,18 +64,18 @@ const CartPage = () => {
         </div>
         <div className="w-full lg:w-96">
           <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-xl sticky top-24">
-            <h2 className="font-black text-xl text-slate-900 italic mb-6">RINGKASAN BELANJA</h2>
+            <h2 className="font-black text-xl text-slate-900 italic mb-6">SHOPPING SUMMARY</h2>
             <div className="space-y-4 mb-8">
               <div className="flex justify-between text-slate-500 font-medium">
-                <span>Total Barang ({cartCount})</span>
+                <span>Total Items ({cartCount})</span>
                 <span>Rp {totalPrice.toLocaleString('id-ID')}</span>
               </div>
               <div className="flex justify-between text-slate-500 font-medium">
-                <span>Biaya Pengiriman</span>
-                <span className="text-green-600 font-bold uppercase text-xs">Gratis Ongkir</span>
+                <span>Shipping Fee</span>
+                <span className="text-green-600 font-bold uppercase text-xs">Free Shipping</span>
               </div>
               <div className="pt-4 border-t border-slate-100 flex justify-between items-center">
-                <span className="font-bold text-slate-900">Total Harga</span>
+                <span className="font-bold text-slate-900">Total Price</span>
                 <span className="font-black text-2xl text-orange-600">Rp {totalPrice.toLocaleString('id-ID')}</span>
               </div>
             </div>
@@ -83,9 +83,9 @@ const CartPage = () => {
               onClick={() => navigate('/checkout')}
               className="w-full py-4 bg-orange-600 text-white rounded-2xl font-black text-lg shadow-xl shadow-orange-100 hover:bg-orange-700 hover:-translate-y-1 transition-all active:scale-95"
             >
-              Beli Sekarang
+              Buy Now
             </button>
-            <p className="text-[10px] text-center text-slate-400 mt-4 font-medium uppercase tracking-widest">Aman & Terpercaya dengan Kyou.id</p>
+            <p className="text-[10px] text-center text-slate-400 mt-4 font-medium uppercase tracking-widest">Safe & Trusted with Kyou.id</p>
           </div>
         </div>
       </div>

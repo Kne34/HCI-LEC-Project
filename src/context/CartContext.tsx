@@ -17,13 +17,13 @@ const INITIAL_MOCK_ORDERS: Order[] = [
         isReady: true
       }
     ],
-    status: "Sedang Diproses",
+    status: "Processing",
     paymentMethod: "QRIS",
     shippingMethod: "Reguler",
     shippingFee: 10000,
     subtotal: 1950000,
     total: 1960000,
-    statusNote: "Pembayaran Selesai! Packing List segera Team Kyou Print!",
+    statusNote: "Payment Completed! Team Kyou will pack your order soon!",
     isPreOrder: false
   },
   {
@@ -39,13 +39,13 @@ const INITIAL_MOCK_ORDERS: Order[] = [
         isReady: false
       }
     ],
-    status: "Dibatalkan",
+    status: "Cancelled",
     paymentMethod: "BCA Transfer",
     shippingMethod: "Reguler",
     shippingFee: 10000,
     subtotal: 850000,
     total: 860000,
-    statusNote: "Pesanan dibatalkan oleh pembeli.",
+    statusNote: "Order cancelled by buyer.",
     isPreOrder: true
   }
 ];
@@ -169,7 +169,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       ...orderData,
       id: orderId,
       date: new Date().toISOString(),
-      status: 'Sedang Diproses',
+      status: 'Processing',
       isPreOrder: hasPreOrder
     };
 
@@ -193,7 +193,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const cancelOrder = (orderId: string) => {
     const orderToCancel = orders.find(o => o.id === orderId);
-    if (orderToCancel && orderToCancel.status !== 'Dibatalkan') {
+    if (orderToCancel && orderToCancel.status !== 'Cancelled') {
       setProducts(prevProducts => {
         return prevProducts.map(p => {
           const orderedItem = orderToCancel.items.find(item => item.id === p.id);
@@ -210,7 +210,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     setOrders(prev => prev.map(order => 
       order.id === orderId 
-        ? { ...order, status: 'Dibatalkan', statusNote: 'Pesanan dibatalkan oleh pembeli.' } 
+        ? { ...order, status: 'Cancelled', statusNote: 'Order cancelled by buyer.' } 
         : order
     ));
   };

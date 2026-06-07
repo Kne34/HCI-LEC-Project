@@ -11,7 +11,7 @@ export interface Product {
   sold: number;
   category: string;
   location: string;
-  condition: 'Baru' | 'Bekas';
+  condition: 'New' | 'Used';
   shipping: string[];
   addedAt: string;
   weight: number;
@@ -34,7 +34,7 @@ export interface Order {
   id: string;
   date: string;
   items: OrderItem[];
-  status: 'Sedang Diproses' | 'Pengiriman Selesai' | 'Dibatalkan' | 'Menunggu Pembayaran';
+  status: 'Processing' | 'Completed' | 'Cancelled' | 'Pending Payment';
   paymentMethod: string;
   shippingMethod: string;
   shippingFee: number;

@@ -11,9 +11,9 @@ const LOCATIONS = [
   "Bali", "Makassar", "Semarang", "Yogyakarta", "Palembang", "Malang"
 ];
 const AVAILABILITY = ["Ready Stock", "PreOrder"];
-const CONDITIONS = ["Baru", "Bekas"];
-const SHIPPING = ["Instan", "Same Day"];
-const RECENCY = ["7 Hari", "14 Hari", "1 Bulan", "3 Bulan"];
+const CONDITIONS = ["New", "Used"];
+const SHIPPING = ["Instant", "Same Day"];
+const RECENCY = ["7 Days", "14 Days", "1 Month", "3 Months"];
 
 const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,7 +35,7 @@ const SearchPage = () => {
     searchParams.getAll('condition').forEach(v => filters.push(v));
     searchParams.getAll('shipping').forEach(v => filters.push(v));
     searchParams.getAll('recency').forEach(v => filters.push(v));
-    if (searchParams.get('rating') === '4') filters.push("Rating 4 ke atas");
+    if (searchParams.get('rating') === '4') filters.push("4 Stars & Up");
     return filters;
   });
 
@@ -43,7 +43,7 @@ const SearchPage = () => {
     min: searchParams.get('minPrice') || '', 
     max: searchParams.get('maxPrice') || '' 
   });
-  const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'Paling Sesuai');
+  const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'Best Match');
   const [now] = useState(() => Date.now());
 
   const syncParams = (newFilters: string[], newPrice: typeof priceRange, newSort: string, page: number) => {
@@ -56,14 +56,15 @@ const SearchPage = () => {
         else if (f === "PreOrder") params.append('availability', 'preorder');
         else if (LOCATIONS.includes(f)) params.append('location', f);
         else if (CONDITIONS.includes(f)) params.append('condition', f);
-        else if (SHIPPING.includes(f)) params.append('shipping', f);
+        else if (f === "Instant") params.append('shipping', f);
+        else if (f === "Same Day") params.append('shipping', f);
         else if (RECENCY.includes(f)) params.append('recency', f);
-        else if (f === "Rating 4 ke atas") params.set('rating', '4');
+        else if (f === "4 Stars & Up") params.set('rating', '4');
     });
 
     if (newPrice.min) params.set('minPrice', newPrice.min);
     if (newPrice.max) params.set('maxPrice', newPrice.max);
-    if (newSort !== 'Paling Sesuai') params.set('sort', newSort);
+    if (newSort !== 'Best Match') params.set('sort', newSort);
     if (page > 1) params.set('page', page.toString());
 
     setSearchParams(params);
@@ -118,7 +119,7 @@ const SearchPage = () => {
         const shipping = selectedFilters.filter(f => SHIPPING.includes(f));
         const categories = selectedFilters.filter(f => CATEGORIES.includes(f));
         const recency = selectedFilters.filter(f => RECENCY.includes(f));
-        const ratingFilter = selectedFilters.includes("Rating 4 ke atas");
+        const ratingFilter = selectedFilters.includes("4 Stars & Up");
 
         if (locations.length > 0 && !locations.includes(product.location)) return false;
         if (conditions.length > 0 && !conditions.includes(product.condition)) return false;
@@ -133,10 +134,10 @@ const SearchPage = () => {
         if (recency.length > 0) {
           const daysOld = (now - new Date(product.addedAt).getTime()) / (1000 * 60 * 60 * 24);
           const matchesRecency = recency.some(r => {
-            if (r === "7 Hari") return daysOld <= 7;
-            if (r === "14 Hari") return daysOld <= 14;
-            if (r === "1 Bulan") return daysOld <= 30;
-            if (r === "3 Bulan") return daysOld <= 90;
+            if (r === "7 Days") return daysOld <= 7;
+            if (r === "14 Days") return daysOld <= 14;
+            if (r === "1 Month") return daysOld <= 30;
+            if (r === "3 Months") return daysOld <= 90;
             return false;
           });
           if (!matchesRecency) return false;
@@ -149,9 +150,9 @@ const SearchPage = () => {
 
       return true;
     }).sort((a, b) => {
-      if (sortBy === 'Harga Terendah') return a.price - b.price;
-      if (sortBy === 'Harga Tertinggi') return b.price - a.price;
-      if (sortBy === 'Terbaru') return new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime();
+      if (sortBy === 'Price: Low to High') return a.price - b.price;
+      if (sortBy === 'Price: High to Low') return b.price - a.price;
+      if (sortBy === 'Newest') return new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime();
       return 0;
     });
   }, [selectedFilters, priceRange, sortBy, searchQuery, now]);
@@ -165,13 +166,13 @@ const SearchPage = () => {
       counts[p.condition] = (counts[p.condition] || 0) + 1;
       p.shipping.forEach(s => counts[s] = (counts[s] || 0) + 1);
       counts[p.category] = (counts[p.category] || 0) + 1;
-      if (p.rating >= 4) counts["Rating 4 ke atas"] = (counts["Rating 4 ke atas"] || 0) + 1;
+      if (p.rating >= 4) counts["4 Stars & Up"] = (counts["4 Stars & Up"] || 0) + 1;
       
       const daysOld = (now - new Date(p.addedAt).getTime()) / (1000 * 60 * 60 * 24);
-      if (daysOld <= 7) counts["7 Hari"] = (counts["7 Hari"] || 0) + 1;
-      if (daysOld <= 14) counts["14 Hari"] = (counts["14 Hari"] || 0) + 1;
-      if (daysOld <= 30) counts["1 Bulan"] = (counts["1 Bulan"] || 0) + 1;
-      if (daysOld <= 90) counts["3 Bulan"] = (counts["3 Bulan"] || 0) + 1;
+      if (daysOld <= 7) counts["7 Days"] = (counts["7 Days"] || 0) + 1;
+      if (daysOld <= 14) counts["14 Days"] = (counts["14 Days"] || 0) + 1;
+      if (daysOld <= 30) counts["1 Month"] = (counts["1 Month"] || 0) + 1;
+      if (daysOld <= 90) counts["3 Months"] = (counts["3 Months"] || 0) + 1;
     });
     return counts;
   }, [now]);
@@ -203,13 +204,13 @@ const SearchPage = () => {
             <div>
               <h1 className="text-xl font-bold text-slate-900 italic">
                 {searchQuery 
-                  ? `Hasil Pencarian untuk "${searchQuery}"` 
+                  ? `Search Results for "${searchQuery}"` 
                   : activeCategoryFilters.length > 0 
-                    ? `Kategori: ${activeCategoryFilters.join(', ')}` 
-                    : 'Semua Produk'}
+                    ? `Category: ${activeCategoryFilters.join(', ')}` 
+                    : 'All Products'}
               </h1>
               <p className="text-sm text-slate-500">
-                {filteredProducts.length} produk ditemukan
+                {filteredProducts.length} products found
               </p>
             </div>
 
@@ -224,16 +225,16 @@ const SearchPage = () => {
               </button>
 
               <div className="flex items-center gap-3">
-                <span className="text-sm text-slate-600 hidden sm:inline whitespace-nowrap">Urutkan:</span>
+                <span className="text-sm text-slate-600 hidden sm:inline whitespace-nowrap">Sort by:</span>
                 <select
                   value={sortBy}
                   onChange={(e) => handleSortChange(e.target.value)}
                   className="bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-100 transition-all cursor-pointer"
                 >
-                  <option>Paling Sesuai</option>
-                  <option>Terbaru</option>
-                  <option>Harga Terendah</option>
-                  <option>Harga Tertinggi</option>
+                  <option>Best Match</option>
+                  <option>Newest</option>
+                  <option>Price: Low to High</option>
+                  <option>Price: High to Low</option>
                 </select>
               </div>
             </div>
@@ -248,9 +249,9 @@ const SearchPage = () => {
           ) : (
             <div className="bg-white rounded-3xl p-10 md:p-20 text-center border border-dashed border-slate-200">
               <div className="text-6xl mb-6">🔍</div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Yah, barangnya nggak ketemu...</h3>
-              <p className="text-slate-500 max-w-xs mx-auto">Coba cek ejaan kamu atau gunakan kata kunci yang lebih umum.</p>
-              <button onClick={handleReset} className="mt-8 text-orange-600 font-bold hover:underline">Hapus Semua Filter</button>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Oops, item not found...</h3>
+              <p className="text-slate-500 max-w-xs mx-auto">Try checking your spelling or using more general keywords.</p>
+              <button onClick={handleReset} className="mt-8 text-orange-600 font-bold hover:underline">Clear All Filters</button>
             </div>
           )}
 

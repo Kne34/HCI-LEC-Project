@@ -39,14 +39,14 @@ const CheckoutPage: React.FC = () => {
   const [voucherCode, setVoucherCode] = useState('');
 
   const subtotal = checkoutItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const shippingFee = selectedShipping === 'Instan' ? 25000 : (selectedShipping === 'Same Day' ? 15000 : 10000);
+  const shippingFee = selectedShipping === 'Instant' ? 25000 : (selectedShipping === 'Same Day' ? 15000 : 10000);
   const total = subtotal + shippingFee;
 
   const deliveryEstimate = useMemo(() => {
     const now = new Date();
-    if (selectedShipping === 'Instan') return 'Tiba dalam 2-4 jam';
-    if (selectedShipping === 'Same Day') return 'Tiba Besok';
-    return now.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+    if (selectedShipping === 'Instant') return 'Arrives in 2-4 hours';
+    if (selectedShipping === 'Same Day') return 'Arrives tomorrow';
+    return now.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
   }, [selectedShipping]);
 
   const handlePlaceOrder = () => {
@@ -68,7 +68,7 @@ const CheckoutPage: React.FC = () => {
         shippingFee: shippingFee,
         subtotal: subtotal,
         total: total,
-        statusNote: 'Pembayaran Selesai! Packing List segera Team Kyou Print!'
+        statusNote: 'Payment Completed! Team Kyou will pack your order soon!'
       });
 
       setPlacedOrderId(orderId);
@@ -80,8 +80,8 @@ const CheckoutPage: React.FC = () => {
   if (checkoutItems.length === 0 && step !== 3) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center py-24">
-        <h2 className="text-2xl font-bold text-slate-800">Tidak ada item untuk dibeli</h2>
-        <Link to="/" className="mt-4 text-orange-600 font-bold hover:underline">Kembali Belanja</Link>
+        <h2 className="text-2xl font-bold text-slate-800">No items to buy</h2>
+        <Link to="/" className="mt-4 text-orange-600 font-bold hover:underline">Back to Shopping</Link>
       </div>
     );
   }
@@ -92,25 +92,25 @@ const CheckoutPage: React.FC = () => {
         <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-6">
           <svg className="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} /></svg>
         </div>
-        <h1 className="text-3xl font-black text-slate-900 italic mb-2">PEMBAYARAN BERHASIL!</h1>
-        <p className="text-slate-500 mb-8 max-w-md">Terima kasih atas pesananmu. Admin Kyou akan segera memproses dan mengirimkan koleksi favoritmu.</p>
+        <h1 className="text-3xl font-black text-slate-900 italic mb-2">PAYMENT SUCCESSFUL!</h1>
+        <p className="text-slate-500 mb-8 max-w-md">Thank you for your order. Kyou Admin will process and ship your favorite collection soon.</p>
         <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm w-full max-w-sm mb-8">
-           <div className="flex justify-between text-sm mb-2"><span className="text-slate-400">ID Pesanan</span> <span className="font-bold text-slate-900">#{placedOrderId}</span></div>
-           <div className="flex justify-between text-sm mb-2"><span className="text-slate-400">Metode</span> <span className="font-bold text-slate-900">{selectedPayment || selectedPaymentCategory}</span></div>
-           <div className="flex justify-between text-sm mb-2"><span className="text-slate-400">Estimasi Tiba</span> <span className="font-bold text-green-600">{deliveryEstimate}</span></div>
+           <div className="flex justify-between text-sm mb-2"><span className="text-slate-400">Order ID</span> <span className="font-bold text-slate-900">#{placedOrderId}</span></div>
+           <div className="flex justify-between text-sm mb-2"><span className="text-slate-400">Method</span> <span className="font-bold text-slate-900">{selectedPayment || selectedPaymentCategory}</span></div>
+           <div className="flex justify-between text-sm mb-2"><span className="text-slate-400">Estimated Arrival</span> <span className="font-bold text-green-600">{deliveryEstimate}</span></div>
         </div>
         <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md justify-center">
           <button 
             onClick={() => navigate('/order-history')}
             className="bg-orange-600 text-white px-8 py-4 rounded-2xl font-black shadow-xl shadow-orange-100 hover:bg-orange-700 transition-all active:scale-95 flex-1"
           >
-            Lihat Riwayat Pesanan
+            View Order History
           </button>
           <button 
             onClick={() => navigate('/')}
             className="border-2 border-slate-200 text-slate-700 px-8 py-4 rounded-2xl font-bold hover:bg-slate-50 transition-all active:scale-95 flex-1"
           >
-            Kembali Belanja
+            Back to Shopping
           </button>
         </div>
       </div>
@@ -121,7 +121,7 @@ const CheckoutPage: React.FC = () => {
     <main className="flex-1 max-w-7xl mx-auto px-4 py-8 w-full">
       <div className="mb-8">
         {step === 1 ? (
-          <h1 className="text-2xl font-black text-slate-800 italic uppercase tracking-tight">Detail Pengiriman</h1>
+          <h1 className="text-2xl font-black text-slate-800 italic uppercase tracking-tight">Delivery Details</h1>
         ) : step === 2 ? (
           <button 
             onClick={() => setStep(1)}
@@ -139,13 +139,13 @@ const CheckoutPage: React.FC = () => {
             <div className="space-y-12 animate-in slide-in-from-left duration-500">
               <section className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="font-bold text-slate-800 text-sm uppercase tracking-widest">Alamat Pengiriman</h2>
+                  <h2 className="font-bold text-slate-800 text-sm uppercase tracking-widest">Shipping Address</h2>
                   {!isEditingAddress && (
                     <button 
                       onClick={() => setIsEditingAddress(true)}
                       className="text-orange-500 text-xs font-bold hover:underline"
                     >
-                      Ganti Alamat
+                      Change Address
                     </button>
                   )}
                 </div>
@@ -154,7 +154,7 @@ const CheckoutPage: React.FC = () => {
                   <div className="space-y-4 mb-12 animate-in fade-in duration-300">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Nama Penerima</label>
+                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Recipient Name</label>
                         <input 
                           type="text" 
                           value={addressData.name}
@@ -163,7 +163,7 @@ const CheckoutPage: React.FC = () => {
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Nomor Telepon</label>
+                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Phone Number</label>
                         <input 
                           type="tel" 
                           value={addressData.phone}
@@ -173,7 +173,7 @@ const CheckoutPage: React.FC = () => {
                       </div>
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Alamat Lengkap</label>
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Full Address</label>
                       <textarea 
                         value={addressData.details}
                         onChange={(e) => setAddressData({...addressData, details: e.target.value})}
@@ -185,7 +185,7 @@ const CheckoutPage: React.FC = () => {
                       onClick={() => setIsEditingAddress(false)}
                       className="w-full py-3 bg-slate-900 text-white rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-black transition-all shadow-lg"
                     >
-                      Simpan Alamat
+                      Save Address
                     </button>
                   </div>
                 ) : (
@@ -196,12 +196,12 @@ const CheckoutPage: React.FC = () => {
                 )}
 
                 <div className="space-y-4">
-                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Metode Pengiriman</h3>
+                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Shipping Method</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     {[
-                      { id: 'Reguler', name: 'Reguler', desc: '2-4 Hari', price: 10000 },
-                      { id: 'Same Day', name: 'Same Day', desc: 'Besok Tiba', price: 15000 },
-                      { id: 'Instan', name: 'Instan', desc: '2-4 Jam', price: 25000 }
+                      { id: 'Reguler', name: 'Regular', desc: '2-4 Days', price: 10000 },
+                      { id: 'Same Day', name: 'Same Day', desc: 'Arrives Tomorrow', price: 15000 },
+                      { id: 'Instant', name: 'Instant', desc: '2-4 Hours', price: 25000 }
                     ].map(ship => (
                       <button 
                         key={ship.id}
@@ -216,9 +216,9 @@ const CheckoutPage: React.FC = () => {
                 </div>
 
                 <div className="mt-8 space-y-3">
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Notes untuk Kyou:</label>
+                  <label className="text-xs font-bold text-slate-500 uppercase tracking-widest">Notes for Kyou:</label>
                   <textarea 
-                    placeholder="Contoh: Tolong packing bubble wrap lebih tebal ya!"
+                    placeholder="Example: Please pack with extra bubble wrap!"
                     className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-4 text-sm focus:ring-1 focus:ring-orange-500 outline-none resize-none transition-all"
                     rows={2}
                   />
@@ -226,7 +226,7 @@ const CheckoutPage: React.FC = () => {
               </section>
 
               <div className="space-y-6">
-                <h2 className="text-2xl font-black text-slate-800 italic uppercase tracking-tight">Detail Pesanan</h2>
+                <h2 className="text-2xl font-black text-slate-800 italic uppercase tracking-tight">Order Details</h2>
                 <section className="bg-slate-100/50 p-6 rounded-2xl border border-slate-100">
                   {checkoutItems.map(item => (
                     <div key={item.id} className="bg-white p-4 rounded-xl shadow-sm border border-slate-50 flex gap-4 mb-4 last:mb-0">
@@ -309,11 +309,11 @@ const CheckoutPage: React.FC = () => {
                 <div className="pt-6 border-t border-slate-50 flex flex-col gap-4">
                   <p className="text-sm text-slate-600 leading-relaxed flex gap-3">
                     <span className="w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">1</span>
-                    <span>Pembayaran melalui <span className="font-bold text-orange-600">{selectedPayment || selectedPaymentCategory}</span> akan diverifikasi secara otomatis.</span>
+                    <span>Payment via <span className="font-bold text-orange-600">{selectedPayment || selectedPaymentCategory}</span> will be verified automatically.</span>
                   </p>
                   <p className="text-sm text-slate-600 leading-relaxed flex gap-3">
                     <span className="w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">2</span>
-                    <span>Masa berlaku pembayaran adalah <span className="font-bold italic">1 jam</span>.</span>
+                    <span>Payment validity period is <span className="font-bold italic">1 hour</span>.</span>
                   </p>
                 </div>
               </div>
@@ -323,14 +323,15 @@ const CheckoutPage: React.FC = () => {
 
         <aside className="space-y-6 lg:top-8">
           <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-            <h3 className="text-sm font-bold text-slate-800 mb-4">Punya kode voucher?</h3>
+            <h3 className="text-sm font-bold text-slate-800 mb-4">Have a voucher code?</h3>
             <div className="flex gap-2">
               <input 
                 type="text" 
-                placeholder="Kode Voucher"
+                placeholder="Voucher Code"
                 value={voucherCode}
                 onChange={(e) => setVoucherCode(e.target.value)}
                 className="flex-1 bg-white border border-slate-200 rounded-lg px-4 py-2 text-sm focus:ring-1 focus:ring-orange-500 outline-none transition-all"
+                style={{ contentVisibility: 'auto' }}
               />
               <button className="bg-slate-400 text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-slate-500 transition-all">Submit</button>
             </div>
@@ -340,7 +341,7 @@ const CheckoutPage: React.FC = () => {
             <h3 className="text-sm font-bold text-slate-800 mb-6">Payment Details</h3>
             <div className="space-y-4 mb-8">
               <div className="flex justify-between text-sm text-slate-500 font-medium">
-                <span>Subtotal ({checkoutItems.length} item)</span>
+                <span>Subtotal ({checkoutItems.length} item(s))</span>
                 <span>IDR {subtotal.toLocaleString('id-ID')}</span>
               </div>
               <div className="flex justify-between text-sm text-slate-500 font-medium">
@@ -361,9 +362,9 @@ const CheckoutPage: React.FC = () => {
               disabled={isProcessing || (step === 2 && !selectedPayment)}
               className={`w-full py-4 rounded-xl font-black text-white text-lg transition-all shadow-xl flex items-center justify-center gap-3 ${isProcessing || (step === 2 && !selectedPayment) ? 'bg-slate-400' : 'bg-orange-600 hover:bg-orange-700 shadow-orange-100'}`}
             >
-              {isProcessing ? 'Processing...' : (step === 1 ? 'Pilih Pembayaran' : 'Bayar Sekarang')}
+              {isProcessing ? 'Processing...' : (step === 1 ? 'Select Payment' : 'Pay Now')}
             </button>
-            <p className="text-[10px] text-center text-slate-400 mt-4 font-bold uppercase tracking-widest">Aman & Terpercaya di Kyou.id</p>
+            <p className="text-[10px] text-center text-slate-400 mt-4 font-bold uppercase tracking-widest">Safe & Trusted at Kyou.id</p>
           </div>
         </aside>
       </div>

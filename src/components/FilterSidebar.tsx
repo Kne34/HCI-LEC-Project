@@ -89,7 +89,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         </div>
       </div>
 
-      <FilterGroup title="Lokasi">
+      <FilterGroup title="Location">
         {displayedLocations.map(loc => (
           <FilterItem 
             key={loc} 
@@ -103,17 +103,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
           onClick={() => setIsExpanded(!isExpanded)}
           className="text-xs text-orange-600 font-bold mt-2 hover:text-orange-700 transition-colors"
         >
-          {isExpanded ? 'Sembunyikan' : 'Lihat selengkapnya'}
+          {isExpanded ? 'Hide' : 'Show more'}
         </button>
       </FilterGroup>
 
-      <FilterGroup title="Harga">
+      <FilterGroup title="Price">
         <div className="space-y-3">
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs">Rp</span>
             <input 
               type="number" 
-              placeholder="Harga Minimum" 
+              placeholder="Min Price" 
               value={priceRange.min}
               onChange={(e) => onPriceChange('min', e.target.value)}
               className="w-full pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-orange-100 focus:border-orange-500 outline-none transition-all" 
@@ -123,7 +123,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs">Rp</span>
             <input 
               type="number" 
-              placeholder="Harga Maksimum" 
+              placeholder="Max Price" 
               value={priceRange.max}
               onChange={(e) => onPriceChange('max', e.target.value)}
               className="w-full pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-orange-100 focus:border-orange-500 outline-none transition-all" 
@@ -132,17 +132,17 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         </div>
       </FilterGroup>
 
-      <FilterGroup title="Kondisi">
-        <FilterItem label="Baru" checked={isChecked("Baru")} onChange={onFilterChange} count={getCount("Baru")} />
-        <FilterItem label="Bekas" checked={isChecked("Bekas")} onChange={onFilterChange} count={getCount("Bekas")} />
+      <FilterGroup title="Condition">
+        <FilterItem label="New" checked={isChecked("New")} onChange={onFilterChange} count={getCount("New")} />
+        <FilterItem label="Used" checked={isChecked("Used")} onChange={onFilterChange} count={getCount("Used")} />
       </FilterGroup>
 
       <FilterGroup title="Rating">
         <FilterItem 
-          label="Rating 4 ke atas" 
-          checked={isChecked("Rating 4 ke atas")} 
+          label="4 Stars & Up" 
+          checked={isChecked("4 Stars & Up")} 
           onChange={onFilterChange} 
-          count={getCount("Rating 4 ke atas")}
+          count={getCount("4 Stars & Up")}
           icon={
             <div className="flex text-amber-400">
               <svg className="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
@@ -156,16 +156,16 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         <FilterItem label="Ready Stock" checked={isChecked("Ready Stock")} onChange={onFilterChange} count={getCount("Ready Stock")} />
       </FilterGroup>
 
-      <FilterGroup title="Durasi Pengiriman">
-        <FilterItem label="Instan" checked={isChecked("Instan")} onChange={onFilterChange} count={getCount("Instan")} />
+      <FilterGroup title="Shipping Duration">
+        <FilterItem label="Instant" checked={isChecked("Instant")} onChange={onFilterChange} count={getCount("Instant")} />
         <FilterItem label="Same Day" checked={isChecked("Same Day")} onChange={onFilterChange} count={getCount("Same Day")} />
       </FilterGroup>
 
-      <FilterGroup title="Terakhir ditambahkan">
-        <FilterItem label="7 Hari" checked={isChecked("7 Hari")} onChange={onFilterChange} count={getCount("7 Hari")} />
-        <FilterItem label="14 Hari" checked={isChecked("14 Hari")} onChange={onFilterChange} count={getCount("14 Hari")} />
-        <FilterItem label="1 Bulan" checked={isChecked("1 Bulan")} onChange={onFilterChange} count={getCount("1 Bulan")} />
-        <FilterItem label="3 Bulan" checked={isChecked("3 Bulan")} onChange={onFilterChange} count={getCount("3 Bulan")} />
+      <FilterGroup title="Date Added">
+        <FilterItem label="7 Days" checked={isChecked("7 Days")} onChange={onFilterChange} count={getCount("7 Days")} />
+        <FilterItem label="14 Days" checked={isChecked("14 Days")} onChange={onFilterChange} count={getCount("14 Days")} />
+        <FilterItem label="1 Month" checked={isChecked("1 Month")} onChange={onFilterChange} count={getCount("1 Month")} />
+        <FilterItem label="3 Months" checked={isChecked("3 Months")} onChange={onFilterChange} count={getCount("3 Months")} />
       </FilterGroup>
 
       <FilterGroup title="Product Category">

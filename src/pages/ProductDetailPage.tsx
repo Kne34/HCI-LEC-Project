@@ -9,7 +9,7 @@ const ProductDetailPage = () => {
   const isWishlisted = isInWishlist(Number(id));
   const [isAdding, setIsAdding] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState('Detail Produk');
+  const [activeTab, setActiveTab] = useState('Product Detail');
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
   
   const product = products.find(p => p.id === Number(id));
@@ -18,8 +18,8 @@ const ProductDetailPage = () => {
   if (!product) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center py-20">
-        <h2 className="text-2xl font-bold text-slate-800">Produk tidak ditemukan</h2>
-        <Link to="/" className="mt-4 text-orange-600 font-bold hover:underline">Kembali ke Beranda</Link>
+        <h2 className="text-2xl font-bold text-slate-800">Product not found</h2>
+        <Link to="/" className="mt-4 text-orange-600 font-bold hover:underline">Back to Home</Link>
       </div>
     );
   }
@@ -74,12 +74,12 @@ const ProductDetailPage = () => {
             <h1 className="text-[24px] font-bold text-slate-900 leading-snug mb-2">{product.name}</h1>
             
             <div className="flex items-center gap-2 text-sm mb-4">
-              <span className="text-slate-500">Terjual <span className="text-slate-900 font-medium">{product.sold}+</span></span>
+              <span className="text-slate-500"><span className="text-slate-900 font-medium">{product.sold}+</span> sold</span>
               <span className="text-slate-300">•</span>
               <div className="flex items-center gap-1">
                 <svg className="w-4 h-4 text-amber-400 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
                 <span className="font-bold text-slate-900">{product.rating}</span>
-                <span className="text-slate-500">(10,2rb rating)</span>
+                <span className="text-slate-500">(10.2k ratings)</span>
               </div>
             </div>
 
@@ -90,11 +90,11 @@ const ProductDetailPage = () => {
             <div className="h-[1px] bg-slate-100 w-full mb-6"></div>
 
             <div className="border-b border-slate-100 flex gap-8 mb-6">
-              {['Detail Produk', 'Info Penting'].map(tab => (
+              {['Product Detail', 'Important Info'].map(tab => (
                 <button 
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`pb-3 text-sm font-bold transition-all relative ${activeTab === tab ? 'text-orange-600' : 'text-slate-500 hover:text-orange-600'}`}
+                   key={tab}
+                   onClick={() => setActiveTab(tab)}
+                   className={`pb-3 text-sm font-bold transition-all relative ${activeTab === tab ? 'text-orange-600' : 'text-slate-500 hover:text-orange-600'}`}
                 >
                   {tab}
                   {activeTab === tab && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-500"></div>}
@@ -102,66 +102,66 @@ const ProductDetailPage = () => {
               ))}
             </div>
 
-            {activeTab === 'Detail Produk' ? (
+            {activeTab === 'Product Detail' ? (
               <div className="text-sm text-slate-700 space-y-4 leading-relaxed pb-20">
                 <div className="grid grid-cols-2 gap-y-2 max-w-sm">
-                  <span className="text-slate-500">Kondisi:</span> <span className="text-orange-600 font-bold">{product.condition}</span>
-                  <span className="text-slate-500">Berat Satuan:</span> <span>{product.weight} g</span>
-                  <span className="text-slate-500">Kategori:</span> <span className="text-orange-600 font-bold">{product.category}</span>
-                  <span className="text-slate-500">Seri:</span> <span className="text-orange-600 font-bold">{product.series}</span>
+                  <span className="text-slate-500">Condition:</span> <span className="text-orange-600 font-bold">{product.condition}</span>
+                  <span className="text-slate-500">Weight:</span> <span>{product.weight} g</span>
+                  <span className="text-slate-500">Category:</span> <span className="text-orange-600 font-bold">{product.category}</span>
+                  <span className="text-slate-500">Series:</span> <span className="text-orange-600 font-bold">{product.series}</span>
                 </div>
                 <p className="pt-4 border-t border-slate-50">
                   {product.description}
                 </p>
                 <p>
-                  Produk ini dijamin 100% Original Manufacture Guarantee. 
-                  Kami selalu menggunakan packing bubble wrap tebal untuk memastikan keamanan barang sampai ke tangan Anda.
+                  This product is guaranteed 100% Original Manufacture Guarantee. 
+                  We always use thick bubble wrap packaging to ensure the safety of the items to your hands.
                 </p>
                 <p>
-                  Stok terbatas! Segera miliki koleksi {product.series} favoritmu sebelum kehabisan. 
-                  Tersedia pengiriman {product.shipping.join(', ')} untuk area tertentu.
+                  Limited stock! Get your favorite {product.series} collection before it runs out. 
+                  Shipping available via {product.shipping.join(', ')} for specific areas.
                 </p>
               </div>
             ) : (
               <div className="text-sm text-slate-700 space-y-8 pb-20">
                 <section>
-                  <h3 className="font-bold text-slate-900 mb-2">Kebijakan Pengembalian Produk</h3>
+                  <h3 className="font-bold text-slate-900 mb-2">Product Return Policy</h3>
                   <p className={`text-slate-500 text-xs leading-relaxed mb-2 ${expandedSections.includes('kebijakan') ? '' : 'line-clamp-2'}`}>
-                    Demi menjaga kenyamanan bagi kedua belah pihak, dimohon untuk merekaman video unboxing sebagai bukti untuk klaim retur. Kami tidak dapat melayani komplain dalam bentuk apapun apabila pembeli tidak menyertakan video unboxing paket. Apabila terdapat ketidaksesuaian produk (tipe, seri, & warna) yang dikirimkan dengan yang dipesan, mohon mengajukan komplain pada pusat resolusi yang tersedia dengan menyertakan video unboxing (terlihat label pengiriman dan produk yang dikirim). Untuk produk yang tidak sesuai, mohon segel kemasan untuk tidak dibuka. Apabila segel produk (luar & dalam) sudah dibuka, komplain tidak akan dilayani dan transaksi dianggap telah selesai dan sesuai. Video unboxing paket dimulai dari tampilan label pengiriman hingga barang fisik didalamnya (sudah terlihat produk). Kami tidak menerima video unboxing yang dilakukan setelah kemasan luar/segel resmi terbuka. Komplain dilakukan maks. 2x24 jam setelah pesanan sampai di alamat Anda. Komplain atau keluhan dapat dilakukan melalui kolom chat serta pusat resolusi, untuk penyelesaian komplain berdasarkan solusi yang disetujui oleh kedua belah pihak (penjual & pembeli) Pesanan akan diproses dan dikirimkan berdasarkan urutan pesanan masuk.Terima Kasih atas perhatiannya dan Selamat Berbelanja.
+                    For the convenience of both parties, please record an unboxing video as proof for return claims. We cannot serve complaints of any kind if the buyer does not include a package unboxing video. If there is a product discrepancy (type, series, & color) sent compared to what was ordered, please file a complaint on the available resolution center by enclosing the unboxing video (showing the shipping label and the product sent). For products that do not match, please do not open the packaging seal. If the product seal (outer & inner) has been opened, complaints will not be served and the transaction is considered completed and correct. The package unboxing video starts from the display of the shipping label to the physical item inside (product is already visible). We do not accept unboxing videos made after the outer packaging/official seal has been opened. Complaints must be made max. 2x24 hours after the order reaches your address. Complaints or grievances can be made through the chat column as well as the resolution center, for the settlement of complaints based on the solution agreed upon by both parties (seller & buyer). Orders will be processed and shipped based on the order sequence. Thank you for your attention and Happy Shopping.
                   </p>
                   <button 
                     onClick={() => toggleSection('kebijakan')}
                     className="text-orange-600 font-bold text-xs hover:underline"
                   >
-                    {expandedSections.includes('kebijakan') ? 'Sembunyikan' : 'Selengkapnya'}
+                    {expandedSections.includes('kebijakan') ? 'Hide' : 'Read More'}
                   </button>
                 </section>
 
                 <section>
-                  <h3 className="font-bold text-slate-900 mb-2">Waktu Operasional Toko</h3>
+                  <h3 className="font-bold text-slate-900 mb-2">Store Operational Hours</h3>
                   <p className={`text-slate-500 text-xs leading-relaxed mb-2 ${expandedSections.includes('operasional') ? '' : 'line-clamp-2'}`}>
-                    Senin-Sabtu: 09.00 - 15.00 WIB<br/>
-                    Minggu Libur (Produkmu bisa dibeli)<br/>
-                    Libur Nasional: Libur (diproses pada hari kerja berikutnya)
+                    Monday-Saturday: 09:00 - 15:00 WIB<br/>
+                    Sunday Off (Your product can still be bought)<br/>
+                    National Holiday: Closed (processed on the next business day)
                   </p>
                   <button 
                     onClick={() => toggleSection('operasional')}
                     className="text-orange-600 font-bold text-xs hover:underline"
                   >
-                    {expandedSections.includes('operasional') ? 'Sembunyikan' : 'Selengkapnya'}
+                    {expandedSections.includes('operasional') ? 'Hide' : 'Read More'}
                   </button>
                 </section>
 
                 <section>
-                  <h3 className="font-bold text-slate-900 mb-2">Informasi Pesanan & Pengiriman</h3>
+                  <h3 className="font-bold text-slate-900 mb-2">Order & Shipping Information</h3>
                   <p className={`text-slate-500 text-xs leading-relaxed mb-2 ${expandedSections.includes('pengiriman') ? '' : 'line-clamp-2'}`}>
-                    Order yang masuk sebelum pukul 15:00 akan diproses di gudang dan diserahkan ke kurir pada hari yang sama. Pesanan yang diterima setelah waktu tersebut akan diproses dan diserahkan pada hari kerja berikutnya, sesuai dengan jadwal operasional toko. Mohon selalu berhati-hati terhadap modus penipuan. Kyou.id tidak pernah menghubungi customer melalui Whatsapp and atau sosial media lainnya. Kyou.id hanya menghubungi customer melalui Live Chat resmi.
+                    Orders received before 15:00 will be processed in the warehouse and handed over to the courier on the same day. Orders received after that time will be processed and handed over on the next business day, according to the store's operational schedule. Please always be careful of fraudulent schemes. Kyou.id never contacts customers via Whatsapp or other social media. Kyou.id only contacts customers through the official Live Chat.
                   </p>
                   <button 
                     onClick={() => toggleSection('pengiriman')}
                     className="text-orange-600 font-bold text-xs hover:underline"
                   >
-                    {expandedSections.includes('pengiriman') ? 'Sembunyikan' : 'Selengkapnya'}
+                    {expandedSections.includes('pengiriman') ? 'Hide' : 'Read More'}
                   </button>
                 </section>
               </div>
@@ -170,7 +170,7 @@ const ProductDetailPage = () => {
 
           <div className="hidden lg:block w-[280px] flex-shrink-0 sticky top-24">
             <div className="p-4 border border-slate-200 rounded-2xl shadow-sm bg-white">
-              <h3 className="font-bold text-slate-900 mb-4 text-sm">Atur jumlah dan catatan</h3>
+              <h3 className="font-bold text-slate-900 mb-4 text-sm">Set quantity and notes</h3>
               
               <div className="flex items-center gap-4 mb-6">
                  <div className="flex items-center border border-slate-200 rounded-lg p-1">
@@ -189,7 +189,7 @@ const ProductDetailPage = () => {
                       disabled={product.isReady && quantity >= product.stock}
                     >+</button>
                  </div>
-                 <p className="text-xs text-slate-500">Stok: <span className="font-bold text-slate-900">{product.stock}</span></p>
+                 <p className="text-xs text-slate-500">Stock: <span className="font-bold text-slate-900">{product.stock}</span></p>
               </div>
 
               <div className="flex items-center justify-between mb-6">
@@ -206,13 +206,13 @@ const ProductDetailPage = () => {
                       : 'bg-orange-600 text-white hover:bg-orange-700'
                   }`}
                 >
-                  {isAdding ? '✓ Berhasil' : '+ Keranjang'}
+                  {isAdding ? '✓ Success' : '+ Cart'}
                 </button>
                 <button 
                   onClick={() => navigate(`/checkout?buyNow=${product.id}&qty=${quantity}`)}
                   className="w-full py-3 border-2 border-orange-600 text-orange-600 rounded-xl font-black text-sm hover:bg-orange-50 transition-all"
                 >
-                  Beli Langsung
+                  Buy Now
                 </button>
               </div>
 
@@ -244,13 +244,13 @@ const ProductDetailPage = () => {
                 : 'bg-white border-orange-600 text-orange-600'
             }`}
           >
-            {isAdding ? '✓ Berhasil' : 'Keranjang'}
+            {isAdding ? '✓ Success' : 'Cart'}
           </button>
           <button 
             onClick={() => navigate(`/checkout?buyNow=${product.id}&qty=${quantity}`)}
             className="flex-1 py-3 bg-orange-600 text-white rounded-xl font-black text-sm active:scale-95 transition-all"
           >
-            Beli Sekarang
+            Buy Now
           </button>
         </div>
       </div>

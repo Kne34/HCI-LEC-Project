@@ -26,9 +26,9 @@ const LandingPage = () => {
          </div>
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white">
             <h1 className="text-5xl md:text-7xl font-black italic tracking-tighter mb-4">KYOU<span className="text-orange-600">.ID</span></h1>
-            <p className="text-xl md:text-2xl font-bold mb-8 max-w-xl leading-tight">Temukan Figure dan Hobby Original Terlengkap di Indonesia.</p>
+            <p className="text-xl md:text-2xl font-bold mb-8 max-w-xl leading-tight">Find the most complete original figures and hobbies in Indonesia.</p>
             <div className="flex gap-4">
-              <button onClick={() => navigate('/search?q=')} className="bg-orange-600 hover:bg-orange-700 text-white text-lg px-8 py-4 rounded-lg font-bold transition-all shadow-lg shadow-orange-900/20">Mulai Belanja</button>
+              <button onClick={() => navigate('/search?q=')} className="bg-orange-600 hover:bg-orange-700 text-white text-lg px-8 py-4 rounded-lg font-bold transition-all shadow-lg shadow-orange-900/20">Start Shopping</button>
               <button onClick={() => navigate('/search?availability=preorder')} className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-lg font-bold hover:bg-white/20 transition-all">Pre-Order List</button>
             </div>
          </div>
@@ -68,13 +68,13 @@ const LandingPage = () => {
                               <h2 className="text-2xl md:text-4xl font-black text-white italic leading-tight mb-4">{product.name}</h2>
                               <div className="flex items-center justify-center md:justify-start gap-4 mb-6">
                                  <span className="text-orange-500 text-2xl md:text-3xl font-black italic">Rp{product.price.toLocaleString('id-ID')}</span>
-                                 <span className="text-slate-400 text-sm font-bold border-l border-slate-700 pl-4">Terjual {product.sold}+ unit</span>
+                                 <span className="text-slate-400 text-sm font-bold border-l border-slate-700 pl-4">{product.sold}+ units sold</span>
                               </div>
                               <button 
                                  onClick={() => navigate(`/product/${product.id}`)}
                                  className="bg-white text-slate-900 px-8 py-3.5 rounded-xl font-black text-sm hover:bg-orange-500 hover:text-white transition-all shadow-lg"
                               >
-                                 Lihat Detail &rarr;
+                                 View Details &rarr;
                               </button>
                            </div>
                            <div className="hidden md:block w-72 h-72 relative">
@@ -110,9 +110,9 @@ const LandingPage = () => {
         <div className="flex items-center justify-between mb-12">
           <div className="flex items-center gap-3">
              <div className="w-2 h-8 bg-orange-600 rounded-full"></div>
-             <h2 className="text-3xl font-black text-slate-900 italic tracking-tighter uppercase">KATEGORI POPULER</h2>
+             <h2 className="text-3xl font-black text-slate-900 italic tracking-tighter uppercase">POPULAR CATEGORIES</h2>
           </div>
-          <button onClick={() => navigate('/search?category=')} className="text-orange-600 font-bold hover:underline">Lihat Semua Kategori</button>
+          <button onClick={() => navigate('/search?category=')} className="text-orange-600 font-bold hover:underline">View All Categories</button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
            {['Scale Figure', 'Nendoroid', 'Model Kit'].map((cat, i) => (
@@ -128,7 +128,7 @@ const LandingPage = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-8">
                    <h3 className="text-2xl font-black text-white italic tracking-tighter">{cat}</h3>
-                   <p className="text-orange-400 font-bold text-sm tracking-widest mt-2 uppercase">Lihat Koleksi &rarr;</p>
+                   <p className="text-orange-400 font-bold text-sm tracking-widest mt-2 uppercase">View Collection &rarr;</p>
                 </div>
              </div>
            ))}
@@ -139,9 +139,9 @@ const LandingPage = () => {
         <div className="flex items-center justify-between mb-12">
           <div className="flex items-center gap-3">
              <div className="w-2 h-8 bg-orange-600 rounded-full"></div>
-             <h2 className="text-3xl font-black text-slate-900 italic tracking-tighter uppercase">REKOMENDASI UNTUKMU</h2>
+             <h2 className="text-3xl font-black text-slate-900 italic tracking-tighter uppercase">RECOMMENDED FOR YOU</h2>
           </div>
-          <button onClick={() => navigate('/search?q=')} className="text-orange-600 font-bold hover:underline">Lihat Semua</button>
+          <button onClick={() => navigate('/search?q=')} className="text-orange-600 font-bold hover:underline">View All</button>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
           {recommendedProducts.map(product => (
@@ -153,7 +153,7 @@ const LandingPage = () => {
              onClick={() => navigate('/search?q=')}
              className="px-16 py-5 border-2 border-orange-600 text-orange-600 font-black rounded-2xl hover:bg-orange-600 hover:text-white transition-all shadow-lg hover:shadow-orange-200"
            >
-             Tampilkan Lebih Banyak
+             Show More
            </button>
         </div>
       </section>

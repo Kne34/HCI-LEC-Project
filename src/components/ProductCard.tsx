@@ -47,7 +47,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               <span className="ml-1 font-semibold text-slate-700">{product.rating}</span>
             </div>
             <span className="text-slate-300">|</span>
-            <span>Terjual {product.sold}</span>
+            <span>Sold {product.sold}</span>
           </div>
         </div>
       </div>
