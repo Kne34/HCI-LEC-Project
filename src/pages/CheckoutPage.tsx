@@ -209,7 +209,7 @@ const CheckoutPage: React.FC = () => {
                         className={`p-4 rounded-xl border-2 text-left transition-all ${selectedShipping === ship.id ? 'border-orange-500 bg-orange-50/30' : 'border-slate-50 bg-slate-50/50 hover:border-slate-200'}`}
                       >
                         <p className={`text-sm font-bold ${selectedShipping === ship.id ? 'text-orange-600' : 'text-slate-700'}`}>{ship.name}</p>
-                        <p className="text-[10px] text-slate-400">{ship.desc} • IDR {ship.price.toLocaleString('id-ID')}</p>
+                        <p className="text-[10px] text-slate-400">{ship.desc} • Rp {ship.price.toLocaleString('id-ID')}</p>
                       </button>
                     ))}
                   </div>
@@ -236,11 +236,11 @@ const CheckoutPage: React.FC = () => {
                       <div className="flex-1 flex flex-col justify-between">
                         <div className="flex justify-between items-start">
                           <h3 className="text-sm font-medium text-slate-700 max-w-md line-clamp-2">{item.name}</h3>
-                          <p className="font-bold text-orange-600 text-sm whitespace-nowrap ml-4">IDR {item.price.toLocaleString('id-ID')}</p>
+                          <p className="font-bold text-orange-600 text-sm whitespace-nowrap ml-4">Rp {item.price.toLocaleString('id-ID')}</p>
                         </div>
                         <div className="flex justify-between items-end">
                           <div className="space-y-1">
-                            <p className="text-xs text-slate-400 line-through">IDR {(item.price * 1.2).toLocaleString('id-ID')}</p>
+                            <p className="text-xs text-slate-400 line-through">Rp {(item.price * 1.2).toLocaleString('id-ID')}</p>
                             <p className="text-xs text-slate-500 font-medium">Quantity: <span className="font-bold text-slate-700">{item.quantity} item(s)</span></p>
                           </div>
                         </div>
@@ -342,15 +342,15 @@ const CheckoutPage: React.FC = () => {
             <div className="space-y-4 mb-8">
               <div className="flex justify-between text-sm text-slate-500 font-medium">
                 <span>Subtotal ({checkoutItems.length} item(s))</span>
-                <span>IDR {subtotal.toLocaleString('id-ID')}</span>
+                <span>Rp {subtotal.toLocaleString('id-ID')}</span>
               </div>
               <div className="flex justify-between text-sm text-slate-500 font-medium">
                 <span>Shipping Fee ({selectedShipping})</span>
-                <span>IDR {shippingFee.toLocaleString('id-ID')}</span>
+                <span>Rp {shippingFee.toLocaleString('id-ID')}</span>
               </div>
               <div className="pt-6 border-t border-slate-100 flex justify-between items-center">
                 <span className="font-bold text-slate-800 text-lg">Total</span>
-                <span className="font-black text-xl text-orange-600">IDR {total.toLocaleString('id-ID')}</span>
+                <span className="font-black text-xl text-orange-600">Rp {total.toLocaleString('id-ID')}</span>
               </div>
             </div>
             
